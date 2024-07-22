@@ -31,6 +31,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@huggingface/inference": "^2.8.0",
 		"@supabase/supabase-js": "^2.44.3",
 		"openai": "^3.2.1"
 	}
