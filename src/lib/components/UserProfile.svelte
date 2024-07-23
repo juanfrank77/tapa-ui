@@ -12,6 +12,7 @@
   max-width: 100%;
   padding: 18px 15px;
   border-radius: 30px;
+  margin-top: 5rem;
   background-color: #fff;
   box-shadow: 14px 17px 40px 4px rgba(112, 144, 176, 0.08), 0 4px 21.8px rgba(175, 152, 152, 0.25);
 }

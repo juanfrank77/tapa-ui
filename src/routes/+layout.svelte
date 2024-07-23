@@ -1,51 +1,53 @@
 <script>
     import './styles.css';
-    import Header from '$lib/sections/Header.svelte';
     import Sidebar from '$lib/components/Sidebar.svelte';
-
-    let isNavOpen = false;
-    let isNavCollapsed = false;
+    import { sidebarOpen } from '$lib/stores/sidebar';
 
 </script>
 
 <div class="app">
-    <aside class="sidebar">
-        <Sidebar />
-    </aside>
-    <main>
-        <Header />  
-        <slot />
-    </main>
+  <aside class="sidebar" class:close={$sidebarOpen}>
+    <Sidebar />
+  </aside>
+  <main>
+    <slot />
+  </main>
 </div>
 
 <style>
     .app {
-        display: grid;
-        grid-template-columns: 28% 72%;
-        grid-template-rows: 100vh;
-        grid-gap: 10px;
+        display: flex
     }
 
-    aside {
-        grid-column: 1;
+    .sidebar {
         background-color: var(--white);
-        width: 100%;
+        transition: transform 0.3s ease-in-out;
     }
 
     main {
-        grid-column: 2;
         background-color: #fff;
         padding: 15px;
+    }
+
+    .close {
+        transform: translateX(-100%);
+        display: none;
     }
 
     /* Hide aside on mobile resolutions */
     @media screen and (max-width: 768px) {
         .app {
+            width: 100%;
+        }
+
+        .sidebar {
             display: block;
         }
-        aside {
+
+        .close {
             display: none;
         }
+
     }
 
 </style>

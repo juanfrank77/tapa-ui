@@ -23,9 +23,8 @@ import logo from '$lib/images/tapa-logo.png'
 
 .sidebar-content {
   background-color: #f8f8f8;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   padding: 42px 14px 16px;
 }
@@ -54,9 +53,4 @@ import logo from '$lib/images/tapa-logo.png'
   align-self: auto;
 }
 
-@media (max-width: 991px) {
-  .sidebar-content {
-    width: 100%;
-  }
-}
 </style>
