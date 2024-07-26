@@ -17,11 +17,6 @@
   margin-bottom: 15px;
 }
 
-.chat-item.active {
-  background-color: #ebebeb;
-  border: 1px solid #000;
-}
-
 .chat-icon {
   font-size: 18px;
   line-height: 167%;
