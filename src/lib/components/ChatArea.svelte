@@ -1,13 +1,13 @@
 <script>
 import ChatMessages from './ChatMessages.svelte';
-import ChatInput from './ChatInput.svelte';
 import ChatFooter from './ChatFooter.svelte';
+import ChatWidget from './ChatWidget.svelte';
 </script>
 
 <section class="chat-area">
   <ChatMessages />
-  <ChatInput />
   <ChatFooter />
+  <ChatWidget />
 </section>
 
 <style>
