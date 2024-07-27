@@ -1,26 +1,39 @@
 <script>
+  import pic from '$lib/images/sparkler.png';
   // boolean variable to determine if there are messages yet or not
   let firstMessage = true;
+
+  let newMessage = "";
+
+  let messages = [
+    { text: " ", sender: "ai" },
+  ]
+
+  function sendMessage() {
+    if (newMessage.trim()) {
+      firstMessage = false;
+      messages = [ { text: newMessage, sender: "user" }];
+      newMessage = "";
+      // create a timeout of 2 seconds and then add a message from bot to the messages array
+      setTimeout(() => {
+        messages = [...messages, { text: "Artificial Intelligence (AI) is a branch of computer science that aims to create machines capable of performing tasks that typically require human intelligence. These tasks include learning from experience, understanding natural language, recognizing patterns, solving problems, and making decisions. AI systems work by simulating human intelligence through the use of algorithms, data, and computational power, enabling them to perform tasks without explicit programming and to improve their performance over time.", sender: "ai" }];
+      }, 2000);
+    }
+  }
 
 </script>
 
 <select class="model-selector">
   <option value="Llama-3-70B-Instruct">Llama-3-70B-Instruct</option>
+  <option value="Llama-3.1-70B-Instruct">Llama-3.1-70B-Instruct</option>
+  <option value="Mixtral-8x7B-Instruct">Mixtral-8x7B-Instruct</option>
+  <option value="Yi-1.5-34B-Chat">Yi-1.5-34B-Chat</option>
+  <option value="Phi-3-small-8k-Instruct">Phi-3-small-8k-Instruct</option>
+  <option value="Dbrx-Instruct">Dbrx-Instruct</option>
+  <option value="Falcon-2-11b">Falcon-2-11b</option>
 </select>
 <div class="chat-messages">
-{#if !firstMessage}
-  <div class="message user-message">
-    <div class="user-avatar">
-      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/36518dfe05fa98af2c11b5f6a7618a08868d8435a80bc35daf35073028b3505c?apiKey=31043973fb624f0ca0d45dbff60ef3e5&" alt="User avatar" />
-    </div>
-    <p class="message-content">What is artificial intelligence?</p>
-  </div>
-
-  <div class="message ai-message">
-    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/f2a521b7b8b9b6dc7171678391473550c9e0453680c9da99a6469d4d241cca7d?apiKey=31043973fb624f0ca0d45dbff60ef3e5&" alt="AI avatar" class="ai-avatar" />
-    <p class="message-content">Artificial Intelligence (AI) is a branch of computer science that aims to create machines capable of performing tasks that typically require human intelligence. These tasks include learning from experience, understanding natural language, recognizing patterns, solving problems, and making decisions. AI systems work by simulating human intelligence through the use of algorithms, data, and computational power, enabling them to perform tasks without explicit programming and to improve their performance over time.</p>
-  </div>
-{:else}
+{#if firstMessage}
   <div class="first-message">
     <h1>Welcome to TAPA!</h1>
     <p>
@@ -28,6 +41,26 @@
       above and sending a prompt. You can also use your mic, upload an
       image/file, or choose one of the many prompts available.
     </p>
+  </div>
+{:else}
+  <div class="messages-block">
+    {#each messages as message}
+      {#if message.sender === "user"}
+        <div class="message {message.sender}">
+          <div class="user-avatar">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/36518dfe05fa98af2c11b5f6a7618a08868d8435a80bc35daf35073028b3505c?apiKey=31043973fb624f0ca0d45dbff60ef3e5&" alt="User avatar" />
+          </div>
+          <p class="message-content">{message.text}</p>
+        </div>
+        {:else}
+        <div class="message {message.sender}">
+          <div class="ai-avatar">
+            <img src={pic} alt="AI avatar" />
+          </div>
+          <p class="message-content">{message.text}</p>
+        </div>
+      {/if}
+    {/each}
   </div>
 {/if}
 </div>
@@ -38,9 +71,17 @@
     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/892fe69ccf194bd5212f0d600318780b9a9d55a3a6735e4e95b142e52ff33a32?apiKey=31043973fb624f0ca0d45dbff60ef3e5&" alt="Format text" class="action-icon" />
     <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/73147fce953d2e3a89e26a88ccc1dde87de5a4cc9eab41d42b64119761ca1dc2?apiKey=31043973fb624f0ca0d45dbff60ef3e5&" alt="More options" class="action-icon" />
   </div>
-  <div class="input-wrapper">
-    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5e0f544e95ba713516530319d248c7a1c80779e1c883fd1f5c91f38587eb53b1?apiKey=31043973fb624f0ca0d45dbff60ef3e5&" alt="Send message" class="send-icon" />
-  </div>
+  <form on:submit|preventDefault={sendMessage} class="input-form">
+    <input
+      bind:value={newMessage}
+      placeholder="Type your message..."
+      autocomplete="off"
+      class="input-field"
+    />
+    <button type="submit" class="submit-btn">
+      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5e0f544e95ba713516530319d248c7a1c80779e1c883fd1f5c91f38587eb53b1?apiKey=31043973fb624f0ca0d45dbff60ef3e5&" alt="Send message" class="send-icon" />
+    </button>
+  </form>
 </div>
 
 <style>
@@ -92,11 +133,11 @@
   margin-bottom: 15px;
 }
 
-.user-message {
+.user {
   align-items: center;
 }
 
-.ai-message {
+.ai {
   align-items: baseline;
 }
 
@@ -128,7 +169,6 @@
 
 .chat-input {
   display: flex;
-  justify-content: space-between;
   margin-top: 100px;
   width: 100%;
 }
@@ -136,7 +176,7 @@
 .input-actions {
   display: flex;
   gap: 14px;
-  padding: 0px 15px;
+  padding: 10px 15px;
 }
 
 .action-icon, .send-icon {
@@ -145,14 +185,28 @@
   object-fit: contain;
 }
 
-.input-wrapper {
+.input-form {
   display: flex;
-  flex: 1;
-  justify-content: flex-end;
+  width: 100%;
   padding: 8px 16px;
   border: 1px solid #d9d9d9;
   border-radius: 200px;
   background-color: #fff;
+}
+
+.input-field {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 28px;
+  color: #282828;
+}
+
+.submit-btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
